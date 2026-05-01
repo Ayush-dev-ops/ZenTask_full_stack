@@ -69,11 +69,13 @@ zentask/
 3. Ensure the backend URL in `src/services/api.js` points to `http://localhost:5000/api`.
 4. Start the frontend development server: `npm run dev`
 
-## 🌍 Deployment Options
+## 🌍 Live Demo
 
-ZenTask is designed to be easily deployed to modern cloud platforms:
-- **Backend**: Can be seamlessly deployed to [Railway](https://railway.app/) with a managed MySQL database.
-- **Frontend**: Best served statically via [Vercel](https://vercel.com/) or Netlify.
+Want to see ZenTask in action? We've successfully deployed it!
+
+**[✨ Try ZenTask Live on Vercel](https://zen-task-full-stack.vercel.app/)**
+
+*(Note: The backend is hosted on Railway, so if it hasn't been used in a while, it might take a few seconds to wake up on your first login!)*
 
 ---
-*Developed with focus and precision.*
+*Built with ❤️ for teams who value focus and precision.*
