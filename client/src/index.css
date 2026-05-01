@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand: 99 102 241;
+  --purple: 124 58 237;
+}
+
+.dark {
+  --bg-base: 10 10 18;
+  --bg-surface: 20 20 35;
+  --glass-bg: 255 255 255;
+  --glass-opacity: 0.04;
+  --glass-border: 255 255 255;
+  --glass-border-opacity: 0.08;
+  --text-primary: 226 232 240;
+  --text-muted: 100 116 139;
+  --text-faint: 71 85 105;
+  --heading-color: 255 255 255;
+  --scrollbar-thumb: rgba(99, 102, 241, 0.3);
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-sans antialiased;
+    background-color: rgb(var(--bg-base));
+    color: rgb(var(--text-primary));
+    min-height: 100vh;
+    transition: all 0.3s ease;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: rgb(var(--heading-color));
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    transition: color 0.3s ease;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 99px;
+  }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  from { transform: translateX(-100%) skewX(-15deg); }
+  to { transform: translateX(200%) skewX(-15deg); }
+}
+
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl text-sm outline-none;
+    background: rgba(var(--glass-bg), var(--glass-opacity));
+    color: rgb(var(--text-primary));
+    border: 1px solid rgba(var(--glass-border), var(--glass-border-opacity));
+  }
+  
+  .shimmer-btn {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shimmer-btn::after {
+    content: '';
+    position: absolute;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 2.5s infinite;
+  }
+  
+  .heading {
+    color: rgb(var(--heading-color));
+  }
+  
+  .heading-soft {
+    color: rgb(var(--heading-soft));
+  }
+}
