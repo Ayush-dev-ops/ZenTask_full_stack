@@ -7,7 +7,7 @@ import { useAuth } from '../../context/AuthContext';
  */
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'member' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login, signup } = useAuth();
@@ -28,7 +28,7 @@ export default function LoginPage() {
         await login(formData.email, formData.password);
         navigate('/dashboard');
       } else {
-        await signup(formData.name, formData.email, formData.password);
+        await signup(formData.name, formData.email, formData.password, formData.role);
         // After signup, automatically login
         await login(formData.email, formData.password);
         navigate('/dashboard');
@@ -184,15 +184,34 @@ function AuthForm({ isLogin, formData, onChange, onSubmit, loading }) {
       </div>
 
       {!isLogin && (
-        <FloatingInput 
-          label="Full Name" 
-          name="name" 
-          type="text" 
-          value={formData.name} 
-          onChange={onChange} 
-          delay="600ms"
-          required
-        />
+        <>
+          <FloatingInput 
+            label="Full Name" 
+            name="name" 
+            type="text" 
+            value={formData.name} 
+            onChange={onChange} 
+            delay="600ms"
+            required
+          />
+          <div className="relative stagger-card" style={{ '--delay': '650ms' }}>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={onChange}
+              className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl px-4 py-4 text-sm outline-none transition-all duration-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 shadow-inner appearance-none cursor-pointer"
+            >
+              <option value="member" className="bg-[rgb(var(--bg-surface))]">Member</option>
+              <option value="admin" className="bg-[rgb(var(--bg-surface))]">Admin</option>
+            </select>
+            <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+              <svg className="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+            <label className="absolute -top-2 left-3 bg-[rgb(var(--bg-surface))] px-1 text-[10px] uppercase tracking-wider text-indigo-500 font-bold pointer-events-none">
+              Account Role
+            </label>
+          </div>
+        </>
       )}
       
       <FloatingInput 
