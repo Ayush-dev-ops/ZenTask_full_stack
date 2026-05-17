@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.DS_Store
+
+# Server .env has secrets — set these in Railway dashboard instead
+server/.env
