@@ -29,19 +29,15 @@ server.on('error', (err) => {
 
 function getConnectionConfig() {
     const url = process.env.MYSQL_URL || process.env.DATABASE_URL || process.env.MYSQL_PRIVATE_URL;
-    const password = process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || process.env.DB_PASS || process.env.DB_PASSWORD;
-
     if (url) {
-        const config = { uri: url, multipleStatements: true, connectTimeout: 30000 };
-        if (password) config.password = password;
-        return config;
+        // Return string — mysql2/promise createConnection also accepts a URI string
+        return url;
     }
-
     return {
         host: process.env.MYSQLHOST || 'localhost',
         port: parseInt(process.env.MYSQLPORT || '3306', 10),
         user: process.env.MYSQLUSER || 'root',
-        password: password || '',
+        password: process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || process.env.DB_PASS || '',
         database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || 'railway',
         multipleStatements: true,
         connectTimeout: 30000,
