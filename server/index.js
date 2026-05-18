@@ -28,15 +28,16 @@ server.on('error', (err) => {
 });
 
 function getConnectionConfig() {
-    if (process.env.MYSQL_URL) {
-        return { uri: process.env.MYSQL_URL, multipleStatements: true };
+    const url = process.env.MYSQL_URL || process.env.DATABASE_URL || process.env.MYSQL_PRIVATE_URL;
+    if (url) {
+        return { uri: url, multipleStatements: true };
     }
     return {
         host: process.env.DB_HOST || process.env.MYSQLHOST || 'localhost',
         port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT || '3306', 10),
         user: process.env.DB_USER || process.env.MYSQLUSER || 'root',
-        password: process.env.DB_PASS || process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || '',
-        database: process.env.DB_NAME || process.env.MYSQLDATABASE || 'ethara',
+        password: process.env.DB_PASS || process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.MYSQL_ROOT_PASSWORD || '',
+        database: process.env.DB_NAME || process.env.MYSQLDATABASE || 'railway',
         multipleStatements: true,
         connectTimeout: 30000,
     };
