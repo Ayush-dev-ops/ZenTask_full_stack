@@ -28,27 +28,32 @@ server.on('error', (err) => {
 });
 
 function getConnectionConfig() {
-    if (process.env.MYSQLHOST) {
-        return {
-            host: process.env.MYSQLHOST,
-            port: parseInt(process.env.MYSQLPORT || '3306', 10),
-            user: process.env.MYSQLUSER || 'root',
-            password: process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || '',
-            database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || 'railway',
-            multipleStatements: true,
-            connectTimeout: 30000,
-        };
-    }
     const url = process.env.MYSQL_URL || process.env.DATABASE_URL || process.env.MYSQL_PRIVATE_URL;
+    const password = process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || process.env.DB_PASS || process.env.DB_PASSWORD || '';
+
     if (url) {
-        return { uri: url, multipleStatements: true };
+        try {
+            const parsed = new URL(url);
+            return {
+                host: parsed.hostname,
+                port: parseInt(parsed.port || '3306', 10),
+                user: parsed.username || 'root',
+                password: password || decodeURIComponent(parsed.password || ''),
+                database: parsed.pathname.replace(/^\//, '') || 'railway',
+                multipleStatements: true,
+                connectTimeout: 30000,
+            };
+        } catch (e) {
+            console.error('[setup] Failed to parse MYSQL_URL:', e.message);
+        }
     }
+
     return {
-        host: 'localhost',
-        port: 3306,
-        user: process.env.DB_USER || 'root',
-        password: process.env.DB_PASS || '',
-        database: process.env.DB_NAME || 'ethara',
+        host: process.env.MYSQLHOST || 'localhost',
+        port: parseInt(process.env.MYSQLPORT || '3306', 10),
+        user: process.env.MYSQLUSER || 'root',
+        password,
+        database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || 'railway',
         multipleStatements: true,
         connectTimeout: 30000,
     };
