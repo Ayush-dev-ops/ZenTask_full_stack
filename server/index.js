@@ -104,7 +104,7 @@ async function runSetup() {
             await db.end();
             return;
         } catch (err) {
-            console.error(`[setup] Attempt ${attempt} failed:`, err.message);
+            console.error(`[setup] Attempt ${attempt} failed:`, err.message || err.code || String(err));
             if (db) try { await db.end(); } catch (_) {}
             if (attempt < MAX_RETRIES) {
                 await new Promise(r => setTimeout(r, 3000));
