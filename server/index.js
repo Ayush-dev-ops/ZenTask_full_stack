@@ -5,9 +5,20 @@ require('dotenv').config();
 
 const app = express();
 
-// Allow requests from any origin (needed for Railway + custom domains)
+// Allow requests from the Vercel frontend and local dev
+const allowedOrigins = [
+    'https://zen-task-full-stack.vercel.app',
+    'http://localhost:3000',
+];
 app.use(cors({
-    origin: true,
+    origin: (origin, callback) => {
+        // Allow requests with no origin (e.g. curl, Postman, server-to-server)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`CORS: origin '${origin}' not allowed`));
+        }
+    },
     credentials: true,
 }));
 app.use(express.json());
